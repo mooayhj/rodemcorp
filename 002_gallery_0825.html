@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  로뎀코퍼레이션 홈페이지 · 시공 사진 갤러리  (수정 안내, 직원용)
+
+  · 이 파일은 홈페이지 메인(rodem-corporation.html)의 "제조와 시공, 양국의
+    전문성을 하나로" 섹션 하단 버튼에서 연결되는 별도 페이지입니다.
+    반드시 메인 파일과 같은 폴더에 두세요. (파일명: gallery.html)
+
+  · 프로젝트(현장)를 추가하려면: 아래 <section class="project"> 블록 전체를
+    복사해서 붙여넣고, 내용만 바꾸면 됩니다. "✏ 수정" 표시를 검색해서
+    고칠 곳을 찾으세요.
+
+  · 사진: <div class="photo-grid"> 안의 <div class="photo"> 하나가 사진 한 장
+    자리입니다. 실제 사진 파일이 준비되면 photo 안의
+    <div class="photo__ph">...</div> 를 지우고
+    <img src="사진파일경로.jpg" alt="설명"> 로 바꾸세요.
+    예) <div class="photo"><img src="images/site1-1.jpg" alt="다이마루 신사이바시점 외벽 시공"></div>
+
+  · 위치(지도): 각 프로젝트의 .project__map 안 링크의 href를 구글맵 등의
+    실제 지도 링크로 바꾸면, 그 링크를 새 탭으로 엽니다.
+  ============================================================================
+-->
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시공 사진 갤러리 | 로뎀코퍼레이션 RODEM CORPORATION</title>
+<meta name="description" content="로뎀코퍼레이션 파트너 네트워크의 시공 사진, 사용 제품, 공사 현장 위치를 소개합니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --graphite:#FFFFFF;
+    --steel-900:#F3F9FF;
+    --steel-850:#E9F2FA;
+    --steel-800:#DDE9F4;
+    --line:#D6E2EC;
+    --line-soft:#E6EDF4;
+    --steel-400:#5E7186;
+    --steel-300:#4A5C6E;
+    --steel-200:#2B3B4A;
+    --ink:#0E2233;
+    --bronze:#005BAC;
+    --bronze-hi:#0074C8;
+    --bronze-dim:#003F78;
+
+    --disp:'Archivo',sans-serif;
+    --mono:'Space Mono',monospace;
+    --kr:'Noto Sans KR',sans-serif;
+
+    --maxw:1240px;
+    --pad:clamp(20px,5vw,64px);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--graphite);
+    color:var(--steel-200);
+    font-family:var(--kr);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+
+  /* header */
+  header{
+    position:sticky;top:0;z-index:20;
+    background:rgba(255,255,255,.92);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+  .brand{font-family:var(--disp);font-weight:800;font-size:16px;letter-spacing:.12em;color:var(--ink)}
+  .back{
+    font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:8px;color:var(--steel-300);
+    border:1px solid var(--steel-600,#B4C8DA);padding:9px 16px;transition:.2s;
+  }
+  .back:hover{border-color:var(--bronze);color:var(--bronze)}
+  .back svg{width:14px;height:14px}
+
+  /* hero */
+  .hero{
+    padding:56px 0 40px;
+    background:linear-gradient(180deg,#FFFFFF00 0%,#F3F9FF 100%);
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-family:var(--mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--bronze);
+    display:inline-flex;align-items:center;gap:12px;margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--bronze);display:inline-block}
+  h1{
+    font-family:var(--disp);font-weight:900;font-size:clamp(28px,4vw,42px);color:var(--ink);
+    letter-spacing:-.01em;margin-bottom:16px;
+  }
+  .hero p{max-width:640px;color:var(--steel-300);font-size:15px}
+
+  /* project block */
+  .project{padding:56px 0;border-bottom:1px solid var(--line-soft)}
+  .project__head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:flex-end;margin-bottom:28px}
+  .project__title{font-family:var(--disp);font-weight:800;font-size:clamp(20px,2.6vw,28px);color:var(--ink)}
+  .project__sub{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--steel-400);margin-top:6px}
+
+  .photo-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px;
+  }
+  .photo{
+    aspect-ratio:4/3;border-radius:4px;overflow:hidden;border:1px solid var(--line);
+    background:var(--steel-850);
+  }
+  .photo img{width:100%;height:100%;object-fit:cover}
+  .photo__ph{
+    width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+    color:var(--steel-400);
+    background:repeating-linear-gradient(45deg,var(--steel-850) 0 12px,var(--steel-800) 12px 24px);
+  }
+  .photo__ph svg{width:28px;height:28px;opacity:.6}
+  .photo__ph span{font-family:var(--mono);font-size:10px;letter-spacing:.08em}
+
+  .project__body{display:grid;grid-template-columns:1.3fr 1fr;gap:32px}
+  @media (max-width:820px){ .project__body{grid-template-columns:1fr} .photo-grid{grid-template-columns:repeat(2,1fr)} }
+
+  .block h3{
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--bronze);
+    margin-bottom:12px;
+  }
+  .product-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .product-tags li{
+    list-style:none;font-size:12.5px;color:var(--ink);background:var(--steel-850);
+    border:1px solid var(--line);padding:6px 12px;border-radius:20px;
+  }
+  .project__desc{font-size:14px;color:var(--steel-300);margin-bottom:6px}
+
+  .project__map{
+    display:flex;align-items:center;gap:10px;font-size:14px;color:var(--steel-200);
+  }
+  .project__map svg{width:18px;height:18px;color:var(--bronze);flex:none}
+  .project__map a{color:var(--bronze-hi);font-family:var(--mono);font-size:12px;letter-spacing:.04em;
+    border-bottom:1px solid transparent}
+  .project__map a:hover{border-color:var(--bronze-hi)}
+
+  /* footer */
+  footer{padding:40px 0;text-align:center;color:var(--steel-400);font-size:12px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <span class="brand">RODEM CORPORATION</span>
+    <a class="back" href="rodem-corporation.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+      메인으로
+    </a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">GALLERY · 시공 사례</div>
+    <h1>시공 사진 갤러리</h1>
+    <p>파트너 네트워크가 참여한 현장의 시공 사진과 사용 제품, 현장 위치를 소개합니다. 각 프로젝트를 눌러 상세 사진을 확인하세요.</p>
+  </div>
+</section>
+
+<!-- ============ 프로젝트 1 : ✏ 수정 — 이 블록을 복사해서 현장을 추가하세요 ============ -->
+<section class="project">
+  <div class="wrap">
+    <div class="project__head">
+      <div>
+        <div class="project__title">다이마루 신사이바시점</div>
+        <div class="project__sub">大丸心斎橋店 · 오사카</div>
+      </div>
+      <div class="project__sub">시공 : 竹中工務店</div>
+    </div>
+
+    <div class="photo-grid">
+      <!-- ✏ 수정 : 사진 준비되면 아래 photo__ph 대신 <img src="..." alt="..."> -->
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 01</span>
+      </div></div>
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 02</span>
+      </div></div>
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 03</span>
+      </div></div>
+    </div>
+
+    <div class="project__body">
+      <div class="block">
+        <h3>현장 개요</h3>
+        <p class="project__desc">외장 알루미늄 패널 및 루버 시공. 파트너사(朝日マテックス)가 시공을 담당했으며, 로뎀코퍼레이션은 관련 자재 조달 파트너로 협력을 지향합니다.</p>
+      </div>
+      <div class="block">
+        <h3>사용 제품</h3>
+        <ul class="product-tags">
+          <li>알루미늄 패널</li>
+          <li>알루미늄 루버</li>
+          <li>불연 코팅</li>
+        </ul>
+        <div class="project__map">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <span>오사카 · 신사이바시</span>
+          <!-- ✏ 수정 : 실제 지도 링크로 교체 -->
+          <a href="https://maps.google.com/?q=大丸心斎橋店" target="_blank" rel="noopener">지도 보기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 프로젝트 2 ============ -->
+<section class="project">
+  <div class="wrap">
+    <div class="project__head">
+      <div>
+        <div class="project__title">교토 스타디움</div>
+        <div class="project__sub">京都スタジアム · 교토</div>
+      </div>
+      <div class="project__sub">설계 : 東畑建築事務所</div>
+    </div>
+
+    <div class="photo-grid">
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 01</span>
+      </div></div>
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 02</span>
+      </div></div>
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 03</span>
+      </div></div>
+    </div>
+
+    <div class="project__body">
+      <div class="block">
+        <h3>현장 개요</h3>
+        <p class="project__desc">외장 스판드렐 및 고흡음 패널 시공. 대형 경기장 특성상 넓은 면적의 금속 마감재가 사용되었습니다.</p>
+      </div>
+      <div class="block">
+        <h3>사용 제품</h3>
+        <ul class="product-tags">
+          <li>알루미늄 스판드렐</li>
+          <li>고흡음 패널 (CEILLEX)</li>
+        </ul>
+        <div class="project__map">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <span>교토</span>
+          <a href="https://maps.google.com/?q=京都スタジアム" target="_blank" rel="noopener">지도 보기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 프로젝트 3 ============ -->
+<section class="project">
+  <div class="wrap">
+    <div class="project__head">
+      <div>
+        <div class="project__title">류코쿠대학</div>
+        <div class="project__sub">龍谷大学 · 교토</div>
+      </div>
+      <div class="project__sub">시공 : 竹中工務店</div>
+    </div>
+
+    <div class="photo-grid">
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 01</span>
+      </div></div>
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 02</span>
+      </div></div>
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 03</span>
+      </div></div>
+    </div>
+
+    <div class="project__body">
+      <div class="block">
+        <h3>현장 개요</h3>
+        <p class="project__desc">교내 천장 및 스틸 파티션 시공. 강의동 리모델링 프로젝트의 일환으로 진행되었습니다.</p>
+      </div>
+      <div class="block">
+        <h3>사용 제품</h3>
+        <ul class="product-tags">
+          <li>천장 금속재</li>
+          <li>스틸 간막이</li>
+        </ul>
+        <div class="project__map">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <span>교토</span>
+          <a href="https://maps.google.com/?q=龍谷大学" target="_blank" rel="noopener">지도 보기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 프로젝트 4 ============ -->
+<section class="project">
+  <div class="wrap">
+    <div class="project__head">
+      <div>
+        <div class="project__title">오테몬학원 신캠퍼스</div>
+        <div class="project__sub">追手門学院 新キャンパス · 오사카</div>
+      </div>
+      <div class="project__sub">설계 : 三菱地所設計</div>
+    </div>
+
+    <div class="photo-grid">
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 01</span>
+      </div></div>
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 02</span>
+      </div></div>
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 03</span>
+      </div></div>
+    </div>
+
+    <div class="project__body">
+      <div class="block">
+        <h3>현장 개요</h3>
+        <p class="project__desc">신축 캠퍼스 외장 알루미늄 패널 및 자기세정 코팅 마감 시공.</p>
+      </div>
+      <div class="block">
+        <h3>사용 제품</h3>
+        <ul class="product-tags">
+          <li>알루미늄 패널</li>
+          <li>자기세정 코팅</li>
+        </ul>
+        <div class="project__map">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <span>오사카</span>
+          <a href="https://maps.google.com/?q=追手門学院" target="_blank" rel="noopener">지도 보기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    ※ 본 페이지의 시공 사례는 일본 금속공사 파트너(朝日マテックス)의 시공 레퍼런스이며,
+    로뎀코퍼레이션은 관련 프로젝트에 자재 조달 파트너로 협력하는 것을 지향합니다.<br>
+    &copy; RODEM CORPORATION
+  </div>
+</footer>
+
+</body>
+</html>
