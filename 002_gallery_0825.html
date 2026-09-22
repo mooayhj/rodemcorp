@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  로뎀코퍼레이션 �페이지 · 시공 사진 갤러리 (한/영/일 다국어 버전, 직원용)
+
+  · 이 파일은 하나의 HTML에 한국어/영어/일본어 텍스트를 모두 담고,
+    상단 언어 버튼(한국어 / EN / 日本語)을 눌러 화면 텍스트만 바꿔주는
+    방식입니다. 사진, 지도 링크, 레이아웃은 언어와 상관없이 동일합니다.
+
+  · 프로젝트(현장)를 추가하려면: 아래 <section class="project"> 블록 전체를
+    복사해서 붙여넣고, data-i18n 값과 <script> 안의 I18N 사전(dictionary)에
+    같은 key로 한/영/일 3개 언어 텍스트를 추가하세요.
+
+  · 사진: <div class="photo-grid"> 안의 <div class="photo"> 하나가 사진 한 장
+    자리입니다. 실제 사진 파일이 준비되면 photo 안의
+    <div class="photo__ph">...</div> 를 지우고
+    <img src="사진파일경로.jpg" alt="설명"> 로 바꾸세요.
+
+  · 위치(지도): 각 프로젝트의 .project__map 안 링크의 href는 언어와
+    무관하게 공통이므로 한 번만 넣으면 됩니다.
+  ============================================================================
+-->
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-i18n="page_title">시공 사진 갤러리 | 로뎀코퍼레이션 RODEM CORPORATION</title>
+<meta name="description" content="로뎀코퍼레이션 파트너 네트워크의 시공 사진, 사용 제품, 공사 현장 위치를 소개합니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --graphite:#FFFFFF;
+    --steel-900:#F3F9FF;
+    --steel-850:#E9F2FA;
+    --steel-800:#DDE9F4;
+    --line:#D6E2EC;
+    --line-soft:#E6EDF4;
+    --steel-400:#5E7186;
+    --steel-300:#4A5C6E;
+    --steel-200:#2B3B4A;
+    --ink:#0E2233;
+    --bronze:#005BAC;
+    --bronze-hi:#0074C8;
+    --bronze-dim:#003F78;
+
+    --disp:'Archivo',sans-serif;
+    --mono:'Space Mono',monospace;
+    --kr:'Noto Sans KR',sans-serif;
+
+    --maxw:1240px;
+    --pad:clamp(20px,5vw,64px);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--graphite);
+    color:var(--steel-200);
+    font-family:var(--kr);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+
+  /* header */
+  header{
+    position:sticky;top:0;z-index:20;
+    background:rgba(255,255,255,.92);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
+  .brand{font-family:var(--disp);font-weight:800;font-size:16px;letter-spacing:.12em;color:var(--ink)}
+  .nav-right{display:flex;align-items:center;gap:14px}
+  .back{
+    font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:8px;color:var(--steel-300);
+    border:1px solid var(--steel-600,#B4C8DA);padding:9px 16px;transition:.2s;
+    white-space:nowrap;
+  }
+  .back:hover{border-color:var(--bronze);color:var(--bronze)}
+  .back svg{width:14px;height:14px}
+
+  /* language switcher */
+  .lang-switch{
+    display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--steel-900);
+  }
+  .lang-btn{
+    font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+    padding:6px 12px;border-radius:999px;color:var(--steel-400);
+    cursor:pointer;border:none;background:transparent;transition:.15s;
+  }
+  .lang-btn.active{background:var(--bronze);color:#fff}
+  .lang-btn:not(.active):hover{color:var(--bronze)}
+
+  /* hero */
+  .hero{
+    padding:56px 0 40px;
+    background:linear-gradient(180deg,#FFFFFF00 0%,#F3F9FF 100%);
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-family:var(--mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--bronze);
+    display:inline-flex;align-items:center;gap:12px;margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--bronze);display:inline-block}
+  h1{
+    font-family:var(--disp);font-weight:900;font-size:clamp(28px,4vw,42px);color:var(--ink);
+    letter-spacing:-.01em;margin-bottom:16px;
+  }
+  .hero p{max-width:640px;color:var(--steel-300);font-size:15px}
+
+  /* project block */
+  .project{padding:56px 0;border-bottom:1px solid var(--line-soft)}
+  .project__head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:flex-end;margin-bottom:28px}
+  .project__title{font-family:var(--disp);font-weight:800;font-size:clamp(20px,2.6vw,28px);color:var(--ink)}
+  .project__sub{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--steel-400);margin-top:6px}
+
+  .photo-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px;
+  }
+  .photo{
+    aspect-ratio:4/3;border-radius:4px;overflow:hidden;border:1px solid var(--line);
+    background:var(--steel-850);
+  }
+  .photo img{width:100%;height:100%;object-fit:cover}
+  .photo__ph{
+    width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+    color:var(--steel-400);
+    background:repeating-linear-gradient(45deg,var(--steel-850) 0 12px,var(--steel-800) 12px 24px);
+  }
+  .photo__ph svg{width:28px;height:28px;opacity:.6}
+  .photo__ph span{font-family:var(--mono);font-size:10px;letter-spacing:.08em}
+
+  .project__body{display:grid;grid-template-columns:1.3fr 1fr;gap:32px}
+  @media (max-width:820px){ .project__body{grid-template-columns:1fr} .photo-grid{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:560px){ .nav{height:auto;padding-top:12px;padding-bottom:12px;flex-wrap:wrap} }
+
+  .block h3{
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--bronze);
+    margin-bottom:12px;
+  }
+  .product-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .product-tags li{
+    list-style:none;font-size:12.5px;color:var(--ink);background:var(--steel-850);
+    border:1px solid var(--line);padding:6px 12px;border-radius:20px;
+  }
+  .project__desc{font-size:14px;color:var(--steel-300);margin-bottom:6px}
+
+  .project__map{
+    display:flex;align-items:center;gap:10px;font-size:14px;color:var(--steel-200);flex-wrap:wrap;
+  }
+  .project__map svg{width:18px;height:18px;color:var(--bronze);flex:none}
+  .project__map a{color:var(--bronze-hi);font-family:var(--mono);font-size:12px;letter-spacing:.04em;
+    border-bottom:1px solid transparent}
+  .project__map a:hover{border-color:var(--bronze-hi)}
+
+  /* footer */
+  footer{padding:40px 0;text-align:center;color:var(--steel-400);font-size:12px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <span class="brand">RODEM CORPORATION</span>
+    <div class="nav-right">
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" class="lang-btn" data-lang="ko">한국어</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+        <button type="button" class="lang-btn" data-lang="ja">日本語</button>
+      </div>
+      <a class="back" href="rodem-corporation.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+        <span data-i18n="nav_back">메인으로</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow" data-i18n="eyebrow">GALLERY · 시공 사례</div>
+    <h1 data-i18n="h1_title">시공 사진 갤러리</h1>
+    <p data-i18n="hero_p">파트너 네트워크가 참여한 현장의 시공 사진과 사용 제품, 현장 위치를 소개합니다. 각 프로젝트를 눌러 상세 사진을 확인하세요.</p>
+  </div>
+</section>
+
+<!-- ============ 프로젝트 1 ============ -->
+<section class="project">
+  <div class="wrap">
+    <div class="project__head">
+      <div>
+        <div class="project__title" data-i18n="p1_title">무라타제작소 모리야마사업소</div>
+        <div class="project__sub"><span class="jp-name">村田製作所 守山事業所</span> · <span data-i18n="p1_region">시가</span></div>
+      </div>
+      <div class="project__sub"><span data-i18n="label_contractor">시공</span> : 竹中工務店</div>
+    </div>
+
+    <div class="photo-grid">
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 01</span>
+      </div></div>
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 02</span>
+      </div></div>
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 03</span>
+      </div></div>
+    </div>
+
+    <div class="project__body">
+      <div class="block">
+        <h3 data-i18n="heading_overview">현장 개요</h3>
+        <p class="project__desc" data-i18n="p1_desc">외장 스틸 유공판넬 시공. 시가현 지역의 무라타제작소 거점.</p>
+      </div>
+      <div class="block">
+        <h3 data-i18n="heading_products">사용 제품</h3>
+        <ul class="product-tags">
+          <li data-i18n="tag_perforated">유공판넬</li>
+        </ul>
+        <div class="project__map">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <span data-i18n="p1_map_span">시가현 모리야마시</span>
+          <a href="https://maps.google.com/?q=村田製作所+守山事業所+滋賀県守山市" target="_blank" rel="noopener" data-i18n="map_link">지도 보기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 프로젝트 2 ============ -->
+<section class="project">
+  <div class="wrap">
+    <div class="project__head">
+      <div>
+        <div class="project__title" data-i18n="p2_title">니혼바시잇초메 나카지구 제1종 시가지재개발사업</div>
+        <div class="project__sub"><span class="jp-name">日本橋一丁目中地区 第一種市街地再開発事業</span> · <span data-i18n="p2_region">도쿄</span></div>
+      </div>
+      <div class="project__sub"><span data-i18n="label_contractor">시공</span> : 清水建設 株式会社</div>
+    </div>
+
+    <div class="photo-grid">
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 01</span>
+      </div></div>
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 02</span>
+      </div></div>
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 03</span>
+      </div></div>
+    </div>
+
+    <div class="project__body">
+      <div class="block">
+        <h3 data-i18n="heading_overview">현장 개요</h3>
+        <p class="project__desc" data-i18n="p2_desc">외장 스틸 유공판넬 시공. 도쿄 니혼바시의 고급 레지던스 호텔 및 상업 시설.</p>
+      </div>
+      <div class="block">
+        <h3 data-i18n="heading_products">사용 제품</h3>
+        <ul class="product-tags">
+          <li data-i18n="tag_perforated">유공판넬</li>
+        </ul>
+        <div class="project__map">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <span data-i18n="p2_map_span">도쿄도 주오구</span>
+          <a href="https://maps.google.com/?q=東京ミッドタウン日本橋+東京都中央区日本橋一丁目" target="_blank" rel="noopener" data-i18n="map_link">지도 보기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 프로젝트 3 ============ -->
+<section class="project">
+  <div class="wrap">
+    <div class="project__head">
+      <div>
+        <div class="project__title" data-i18n="p3_title">야마하 본사 22호관</div>
+        <div class="project__sub"><span class="jp-name">ヤマハ本社22号館</span> · <span data-i18n="p3_region">하마마쓰</span> · 2023</div>
+      </div>
+      <div class="project__sub"><span data-i18n="label_contractor">시공</span> : 株式会社 大林組 名古屋支店</div>
+    </div>
+
+    <div class="photo-grid">
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 01</span>
+      </div></div>
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 02</span>
+      </div></div>
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 03</span>
+      </div></div>
+    </div>
+
+    <div class="project__body">
+      <div class="block">
+        <h3 data-i18n="heading_overview">현장 개요</h3>
+        <p class="project__desc" data-i18n="p3_desc">외장 알루미늄 루버 시공. 세계적인 악기 제조업체인 야마하의 지상 12층 규모 본사 오피스 빌딩.</p>
+      </div>
+      <div class="block">
+        <h3 data-i18n="heading_products">사용 제품</h3>
+        <ul class="product-tags">
+          <li data-i18n="tag_louver">외장 알루미늄 루버</li>
+        </ul>
+        <div class="project__map">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <span data-i18n="p3_map_span">시즈오카현 하마마쓰시</span>
+          <a href="https://maps.google.com/?q=ヤマハ株式会社+本社+静岡県浜松市中央区中沢町10-1" target="_blank" rel="noopener" data-i18n="map_link">지도 보기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 프로젝트 4 ============ -->
+<section class="project">
+  <div class="wrap">
+    <div class="project__head">
+      <div>
+        <div class="project__title" data-i18n="p4_title">리쓰메이칸 이바라키캠퍼스</div>
+        <div class="project__sub"><span class="jp-name">立命館茨木キャンパス</span> · <span data-i18n="p4_region">오사카</span> · 2023</div>
+      </div>
+      <div class="project__sub"><span data-i18n="label_contractor">시공</span> : 株式会社 竹中工務店</div>
+    </div>
+
+    <div class="photo-grid">
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 01</span>
+      </div></div>
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 02</span>
+      </div></div>
+      <div class="photo"><div class="photo__ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+        <span>PHOTO 03</span>
+      </div></div>
+    </div>
+
+    <div class="project__body">
+      <div class="block">
+        <h3 data-i18n="heading_overview">현장 개요</h3>
+        <p class="project__desc" data-i18n="p4_desc">유공판넬 시공. 일본 간사이 지방 4대 명문 사립대학의 이바라키 캠퍼스.</p>
+      </div>
+      <div class="block">
+        <h3 data-i18n="heading_products">사용 제품</h3>
+        <ul class="product-tags">
+          <li data-i18n="tag_perforated">유공판넬</li>
+        </ul>
+        <div class="project__map">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <span data-i18n="p4_map_span">오사카부 이바라키시</span>
+          <a href="https://maps.google.com/?q=立命館大学+大阪いばらきキャンパス+大阪府茨木市岩倉町2-150" target="_blank" rel="noopener" data-i18n="map_link">지도 보기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" data-i18n-html="footer_text">
+    ※ 본 페이지의 시공 사례는 일본 금속공사 파트너(朝日マテックス)의 시공 레퍼런스이며,
+    로뎀코퍼레이션은 관련 프로젝트에 자재 조달 파트너로 협력하는 것을 지향합니다.<br>
+    &copy; RODEM CORPORATION
+  </div>
+</footer>
+
+<script>
+(function(){
+  var I18N = {
+    page_title: {
+      ko: "시공 사진 갤러리 | 로뎀코퍼레이션 RODEM CORPORATION",
+      en: "Construction Photo Gallery | RODEM CORPORATION",
+      ja: "施工写真ギャラリー | ロデムコーポレーション RODEM CORPORATION"
+    },
+    nav_back: { ko: "메인으로", en: "Back to Home", ja: "メインへ" },
+    eyebrow: { ko: "GALLERY · 시공 사례", en: "GALLERY · Project Cases", ja: "GALLERY · 施工事例" },
+    h1_title: { ko: "시공 사진 갤러리", en: "Construction Photo Gallery", ja: "施工写真ギャラリー" },
+    hero_p: {
+      ko: "파트너 네트워크가 참여한 현장의 시공 사진과 사용 제품, 현장 위치를 소개합니다. 각 프로젝트를 눌러 상세 사진을 확인하세요.",
+      en: "Introducing construction photos, products used, and site locations from projects completed by our partner network. Click each project to view detailed photos.",
+      ja: "パートナーネットワークが携わった現場の施工写真、使用製品、現場所在地をご紹介します。各プロジェクトをクリックして詳細写真をご確認ください。"
+    },
+    label_contractor: { ko: "시공", en: "Contractor", ja: "施工" },
+    heading_overview: { ko: "현장 개요", en: "Project Overview", ja: "現場概要" },
+    heading_products: { ko: "사용 제품", en: "Products Used", ja: "使用製品" },
+    map_link: { ko: "지도 보기", en: "View Map", ja: "地図を見る" },
+    tag_perforated: { ko: "유공판넬", en: "Perforated Panel", ja: "有孔パネル" },
+    tag_louver: { ko: "외장 알루미늄 루버", en: "Exterior Aluminum Louver", ja: "外装アルミルーバー" },
+
+    p1_title: { ko: "무라타제작소 모리야마사업소", en: "Murata Manufacturing Moriyama Office", ja: "村田製作所 守山事業所" },
+    p1_region: { ko: "시가", en: "Shiga", ja: "滋賀" },
+    p1_desc: {
+      ko: "외장 스틸 유공판넬 시공. 시가현 지역의 무라타제작소 거점.",
+      en: "Exterior steel perforated panel installation. A Murata Manufacturing site located in Shiga Prefecture.",
+      ja: "外装スチール有孔パネル施工。滋賀県エリアの村田製作所拠点。"
+    },
+    p1_map_span: { ko: "시가현 모리야마시", en: "Moriyama, Shiga Prefecture", ja: "滋賀県守山市" },
+
+    p2_title: { ko: "니혼바시잇초메 나카지구 제1종 시가지재개발사업", en: "Nihonbashi 1-chome Naka District Category I Urban Redevelopment Project", ja: "日本橋一丁目中地区 第一種市街地再開発事業" },
+    p2_region: { ko: "도쿄", en: "Tokyo", ja: "東京" },
+    p2_desc: {
+      ko: "외장 스틸 유공판넬 시공. 도쿄 니혼바시의 고급 레지던스 호텔 및 상업 시설.",
+      en: "Exterior steel perforated panel installation. A luxury residence, hotel, and commercial complex in Nihonbashi, Tokyo.",
+      ja: "外装スチール有孔パネル施工。東京・日本橋の高級レジデンス、ホテル及び商業施設。"
+    },
+    p2_map_span: { ko: "도쿄도 주오구", en: "Chuo City, Tokyo", ja: "東京都中央区" },
+
+    p3_title: { ko: "야마하 본사 22호관", en: "Yamaha Headquarters Building No. 22", ja: "ヤマハ本社22号館" },
+    p3_region: { ko: "하마마쓰", en: "Hamamatsu", ja: "浜松" },
+    p3_desc: {
+      ko: "외장 알루미늄 루버 시공. 세계적인 악기 제조업체인 야마하의 지상 12층 규모 본사 오피스 빌딩.",
+      en: "Exterior aluminum louver installation. A 12-story above-ground headquarters office building for Yamaha, the world-renowned musical instrument manufacturer.",
+      ja: "外装アルミルーバー施工。世界的楽器メーカーであるヤマハの地上12階建て本社オフィスビル。"
+    },
+    p3_map_span: { ko: "시즈오카현 하마마쓰시", en: "Hamamatsu, Shizuoka Prefecture", ja: "静岡県浜松市" },
+
+    p4_title: { ko: "리쓰메이칸 이바라키캠퍼스", en: "Ritsumeikan Ibaraki Campus (Osaka Ibaraki Campus)", ja: "立命館茨木キャンパス" },
+    p4_region: { ko: "오사카", en: "Osaka", ja: "大阪" },
+    p4_desc: {
+      ko: "유공판넬 시공. 일본 간사이 지방 4대 명문 사립대학의 이바라키 캠퍼스.",
+      en: "Perforated panel installation. The Ibaraki campus of one of the four prestigious private universities in Japan's Kansai region.",
+      ja: "有孔パネル施工。日本関西地方の名門私立大学「関関同立」の一角、立命館大学の茨木キャンパス。"
+    },
+    p4_map_span: { ko: "오사카부 이바라키시", en: "Ibaraki, Osaka Prefecture", ja: "大阪府茨木市" },
+
+    footer_text: {
+      ko: '※ 본 페이지의 시공 사례는 일본 금속공사 파트너(朝日マテックス)의 시공 레퍼런스이며, 로뎀코퍼레이션은 관련 프로젝트에 자재 조달 파트너로 협력하는 것을 지향합니다.<br>&copy; RODEM CORPORATION',
+      en: '※ The construction cases on this page are references from our Japanese metal construction partner (Asahi Matex), and RODEM Corporation aims to collaborate as a materials procurement partner on related projects.<br>&copy; RODEM CORPORATION',
+      ja: '※本ページの施工事例は日本の金属工事パートナー(朝日マテックス)の施工実績であり、ロデムコーポレーションは関連プロジェクトにおいて資材調達パートナーとして協力することを目指しています。<br>&copy; RODEM CORPORATION'
+    }
+  };
+
+  var STORAGE_KEY = "rodem-gallery-lang";
+  var htmlLangMap = { ko: "ko", en: "en", ja: "ja" };
+
+  function applyLang(lang){
+    if (!["ko","en","ja"].includes(lang)) lang = "ko";
+
+    document.documentElement.lang = htmlLangMap[lang];
+
+    document.title = I18N.page_title[lang];
+
+    document.querySelectorAll("[data-i18n]").forEach(function(el){
+      var key = el.getAttribute("data-i18n");
+      if (I18N[key]) el.textContent = I18N[key][lang];
+    });
+    document.querySelectorAll("[data-i18n-html]").forEach(function(el){
+      var key = el.getAttribute("data-i18n-html");
+      if (I18N[key]) el.innerHTML = I18N[key][lang];
+    });
+
+    document.querySelectorAll(".lang-btn").forEach(function(btn){
+      btn.classList.toggle("active", btn.getAttribute("data-lang") === lang);
+    });
+
+    try { localStorage.setItem(STORAGE_KEY, lang); } catch(e) {}
+  }
+
+  document.querySelectorAll(".lang-btn").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      applyLang(btn.getAttribute("data-lang"));
+    });
+  });
+
+  var saved = "ko";
+  try { saved = localStorage.getItem(STORAGE_KEY) || "ko"; } catch(e) {}
+  applyLang(saved);
+})();
+</script>
+
+</body>
+</html>
