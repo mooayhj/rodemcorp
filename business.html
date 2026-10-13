@@ -530,7 +530,19 @@
     .nav .langsw{margin-left:auto;margin-right:14px}
   }
   @media(max-width:560px){
-    .brand__txt small{display:none}
+    /* 모바일에서도 회사명 전체(RODEM CORPORATION)가 보이도록 글자 크기·간격만 줄임 */
+    .brand{gap:10px}
+    .brand__txt b{font-size:16px;letter-spacing:.12em}
+    .brand__txt small{display:block;font-size:8px;letter-spacing:.14em;margin-top:3px;white-space:nowrap}
+  }
+  @media(max-width:360px){
+    .nav .langsw{margin-right:4px;gap:3px}
+    body[data-lang="ja"] .nav .langsw{margin-right:4px}
+    .langsw button{padding:4px 5px;font-size:9px;letter-spacing:.02em}
+    .brand{gap:8px}
+    .brand__mark{width:30px;height:30px}
+    .brand__txt b{font-size:15px}
+    .brand__txt small{font-size:7.5px;letter-spacing:.1em}
     .nav .langsw{gap:4px;margin-right:10px}
     .langsw button{padding:5px 7px;font-size:10px;letter-spacing:.06em}
   }
