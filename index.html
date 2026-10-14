@@ -644,6 +644,14 @@
   .hero__scrollcue{bottom:auto;top:calc(min(56.25vw,100vh - 72px) - 64px)}   /* 첫 화면 안에서 항상 보이도록 */
   .hero__bg video{top:0;left:0;width:100%;height:100%;min-width:0;min-height:0;object-fit:contain;transform:none;will-change:auto}
   .hero__overlay{background:linear-gradient(180deg,rgba(243,249,255,0) 0%,rgba(243,249,255,0) 78%,rgba(243,249,255,.50) 100%)}
+
+  /* ---------- 줄바꿈 정리: 단어(어절) 중간에서 끊기지 않고, 제목·문단 줄 길이가 고르게 ---------- */
+  body{overflow-wrap:anywhere}                                      /* 줄바꿈 자리가 정말 없을 때만 강제로 끊어 가로 넘침 방지 */
+  body[data-lang="ko"]{word-break:keep-all}                         /* 한글: 띄어쓰기 단위로만 줄바꿈 */
+  body[data-lang="ja"]{word-break:normal;word-break:auto-phrase;line-break:strict}  /* 일본어: 문절 단위로 줄바꿈(지원 브라우저) */
+  body[data-lang="en"]{word-break:normal}
+  h1,h2,h3,.hero__title{text-wrap:balance}                            /* 제목: 줄 길이를 고르게 */
+  p,li,.lead,.cinfo{text-wrap:pretty}                                 /* 문단: 마지막 줄에 한두 글자만 남지 않게 */
 </style>
 </head>
 <body data-lang="ko">

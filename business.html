@@ -587,6 +587,14 @@
   }
   @media(prefers-reduced-motion:reduce){.biz__photo{transition:none;opacity:1;transform:none}}
 
+
+  /* ---------- 줄바꿈 정리: 단어(어절) 중간에서 끊기지 않고, 제목·문단 줄 길이가 고르게 ---------- */
+  body{overflow-wrap:anywhere}                                      /* 줄바꿈 자리가 정말 없을 때만 강제로 끊어 가로 넘침 방지 */
+  body[data-lang="ko"]{word-break:keep-all}                         /* 한글: 띄어쓰기 단위로만 줄바꿈 */
+  body[data-lang="ja"]{word-break:normal;word-break:auto-phrase;line-break:strict}  /* 일본어: 문절 단위로 줄바꿈(지원 브라우저) */
+  body[data-lang="en"]{word-break:normal}
+  h1,h2,h3,.hero__title{text-wrap:balance}                            /* 제목: 줄 길이를 고르게 */
+  p,li,.lead,.cinfo{text-wrap:pretty}                                 /* 문단: 마지막 줄에 한두 글자만 남지 않게 */
 </style>
 </head>
 <body data-lang="ko">
