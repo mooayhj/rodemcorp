@@ -13,7 +13,7 @@
 <meta name="description" content="ロデムコーポレーションは、株式会社裕昌の精密な建築金属マテリアルを日本の建設現場へ調達・輸出する日韓専門商社です。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
     --graphite:#FFFFFF;
@@ -637,6 +637,11 @@
     .langsw button{padding:4px 5px;font-size:9px}
     header .brand{gap:7px}
   }
+
+  /* ---------- 한자 글꼴 보정: 일본어 글자는 항상 Noto Sans JP(일본식 자형)로 표시 ---------- */
+  :root{--disp:'Archivo','Noto Sans JP',sans-serif;--mono:'Space Mono','Noto Sans JP',monospace}
+  body[data-lang="ja"]{--kr:'Noto Sans JP','Noto Sans KR',sans-serif}   /* 일본어 화면: 한자·가나는 JP 글꼴 우선, 한글은 기존 KR 글꼴 */
+  .jp-text,.jp-name{font-family:'Noto Sans JP','Noto Sans KR',sans-serif!important}   /* 한국어·영어 화면에 들어가는 일본어(회사명·지명 등): 한자는 JP, 한글은 기존 KR */
 </style>
 </head>
 <body data-lang="ko">
@@ -1102,6 +1107,17 @@ document.querySelectorAll('.rv').forEach(function(el){io.observe(el);});
   var show=function(){requestAnimationFrame(function(){requestAnimationFrame(function(){ph.classList.add('in');});});};
   var im=ph.querySelector('img');
   if(im.complete) show(); else {im.addEventListener('load',show); im.addEventListener('error',show); setTimeout(show,1500);}
+})();
+
+/* ---------- 항상 일본어로 표시되는 문구(회사명·지명 등)에 일본어 표시를 붙임 ---------- */
+(function(){
+  ['pt2.name','rec.headSub','rec1.n','rec2.n','rec3.n','rec4.n','rec1.d','rec2.d','rec3.d','rec4.d'].forEach(function(k){
+    document.querySelectorAll('[data-t="'+k+'"]').forEach(function(e){e.classList.add('jp-text');e.setAttribute('lang','ja');});
+  });
+  /* 영어 화면에서는 일본어 회사명이 들어가고 한국어 화면에서는 한글 설명이 들어가는 칸: 글꼴만 지정(한글은 KR로 표시) */
+  ['rec1.s','rec2.s','rec3.s','rec4.s'].forEach(function(k){
+    document.querySelectorAll('[data-t="'+k+'"]').forEach(function(e){e.classList.add('jp-text');});
+  });
 })();
 
 setLang(pickLang(),false);
