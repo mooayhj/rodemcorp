@@ -674,6 +674,14 @@
     .langsw button{padding:4px 5px;font-size:9px}
     header .brand{gap:7px}
   }
+
+  /* ---------- 숫자 띠(stats) 줄맞춤: 첫 숫자를 페이지 본문 왼쪽 선에 맞추고, 설명 문구 줄바꿈을 균형 있게 ---------- */
+  .stat:first-child{padding-left:0}
+  .stat span{text-wrap:balance;line-height:1.6}
+  .stat b i{display:inline-block;vertical-align:baseline}
+  @media(max-width:680px){
+    .stat:nth-child(odd){padding-left:0}
+  }
 </style>
 </head>
 <body data-lang="ko">
@@ -756,10 +764,10 @@
 <section class="stats-sec">
   <div class="wrap">
     <div class="stats rv">
-      <!-- ✏ 수정 : 아래 5개 숫자(20 / 2 / 10 / BIM / 3)와 설명 문구를 실제 실적에 맞게 확인해 주세요.
+      <!-- ✏ 수정 : 아래 5개 숫자(25 / 2 / 10 / BIM / 3)와 설명 문구를 실제 실적에 맞게 확인해 주세요.
            숫자는 이 줄에서, 단위·설명 글자는 I18N 사전의 stat1~stat5 항목에서 고칩니다. -->
       <div class="stats__row">
-        <div class="stat"><b>20<i data-t="stat1.u"></i></b><span data-t="stat1.d"></span></div>
+        <div class="stat"><b>25<i data-t="stat1.u"></i></b><span data-t="stat1.d"></span></div>
         <div class="stat"><b>2<i data-t="stat2.u"></i></b><span data-t="stat2.d"></span></div>
         <div class="stat"><b>10<i>+</i></b><span data-t="stat3.d"></span></div>
         <div class="stat"><b>BIM</b><span data-t="stat4.d"></span></div>
@@ -1028,9 +1036,9 @@ ko:{
  "hero.btn1":"취급품목 보기","hero.btn2":"견적·문의하기",
  "route.from":"조달 루트 — <b>제조</b> 대한민국","route.to":"<b>납품</b> 일본 · 관서/관동",
  "route.s1":"인천/부산","route.s2":"SHIPPING","route.s3":"통관 · QC","route.s4":"오사카/도쿄",
- "stat1.u":"년+","stat1.d":"파트너사 해외조달 실적 (관서권 금속공사)",
- "stat2.u":"중","stat2.d":"한국·일본 이중 품질검수 (일본 품질)",
- "stat3.d":"취급 금속마감재 품목군","stat4.d":"도면·강도계산·3D 시공검토 대응",
+ "stat1.u":"년+","stat1.d":"파트너사 해외조달 실적 (일본 전역 금속공사)",
+ "stat2.u":"중","stat2.d":"한국⁠·⁠일본 이중 품질검수 (일본 품질)",
+ "stat3.d":"취급 금속마감재 품목군","stat4.d":"도면⁠·⁠강도계산⁠·⁠3D 시공검토 대응",
  "stat5.u":"건","stat5.d":"일본 관련 특허 보유",
  "about.eyebrow":"회사소개 · 로뎀코퍼레이션",
  "about.h2":"제조는 한국에서<br>신뢰는 일본 기준으로.",
@@ -1101,7 +1109,7 @@ en:{
  "hero.btn1":"View products","hero.btn2":"Request a quote",
  "route.from":"Procurement Route — <b>Manufacturing</b> Korea","route.to":"<b>Delivery</b> Japan · Kansai / Kanto",
  "route.s1":"Incheon/Busan","route.s2":"SHIPPING","route.s3":"CUSTOMS · QC","route.s4":"Osaka/Tokyo",
- "stat1.u":"+ yrs","stat1.d":"Partner track record in overseas sourcing (Kansai metal works)",
+ "stat1.u":"+ yrs","stat1.d":"Partner track record in overseas sourcing (metal works across Japan)",
  "stat2.u":"×","stat2.d":"Dual quality inspection in Korea and Japan",
  "stat3.d":"Product groups of metal finishing materials","stat4.d":"Shop drawings, strength calculation, 3D review",
  "stat5.u":" cases","stat5.d":"Japan-related patents held",
@@ -1174,7 +1182,7 @@ ja:{
  "hero.btn1":"取扱製品を見る","hero.btn2":"お見積り・お問い合わせ",
  "route.from":"調達ルート — <b>製造</b> 韓国","route.to":"<b>納品</b> 日本 · 関西/関東",
  "route.s1":"仁川/釜山","route.s2":"海上輸送","route.s3":"通関 · QC","route.s4":"大阪/東京",
- "stat1.u":"年+","stat1.d":"パートナーの海外調達実績（関西圏 金属工事）",
+ "stat1.u":"年+","stat1.d":"パートナーの海外調達実績（日本全国 金属工事）",
  "stat2.u":"重","stat2.d":"韓国・日本の二重品質検査（日本品質）",
  "stat3.d":"取扱金属マテリアルの品目群","stat4.d":"図面・強度計算・3D施工検討に対応",
  "stat5.u":"件","stat5.d":"日本関連の特許を保有",
