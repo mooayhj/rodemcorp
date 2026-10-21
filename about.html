@@ -642,6 +642,22 @@
   :root{--disp:'Archivo','Noto Sans JP',sans-serif;--mono:'Space Mono','Noto Sans JP',monospace}
   body[data-lang="ja"]{--kr:'Noto Sans JP','Noto Sans KR',sans-serif}   /* 일본어 화면: 한자·가나는 JP 글꼴 우선, 한글은 기존 KR 글꼴 */
   .jp-text,.jp-name{font-family:'Noto Sans JP','Noto Sans KR',sans-serif!important}   /* 한국어·영어 화면에 들어가는 일본어(회사명·지명 등): 한자는 JP, 한글은 기존 KR */
+
+  /* ---------- 상단 메뉴: 글씨 확대(약 1.5배) + 간격 조정 ---------- */
+  .nav{height:84px}
+  .menu{gap:26px}
+  header .wrap{max-width:1440px}                           /* 글씨가 커진 만큼 상단 메뉴 줄을 조금 넓게 */
+  .menu a{font-size:20px}                                   /* 회사소개·사업영역·취급품목·실적·문의 + 카탈로그·실적표 */
+  .menu a.menu__btn{padding:10px 16px}
+  .menu a.menu__btn--first{margin-left:12px}
+  .menu a.menu__btn:not(.menu__btn--first){margin-left:-10px}
+  .langsw button{font-size:12px;padding:7px 10px}
+  @media(min-width:961px) and (max-width:1319px){           /* 글씨가 커진 만큼 조금 일찍 햄버거 메뉴로 전환 */
+    .menu,.nav__cta{display:none}
+    .burger{display:flex}
+    .nav .langsw{margin-left:auto;margin-right:14px}
+  }
+  @media(max-width:960px){.nav{height:72px}}
 </style>
 </head>
 <body data-lang="ko">

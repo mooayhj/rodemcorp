@@ -687,9 +687,49 @@
   :root{--disp:'Archivo','Noto Sans JP',sans-serif;--mono:'Space Mono','Noto Sans JP',monospace}
   body[data-lang="ja"]{--kr:'Noto Sans JP','Noto Sans KR',sans-serif}   /* 일본어 화면: 한자·가나는 JP 글꼴 우선, 한글은 기존 KR 글꼴 */
   .jp-text,.jp-name{font-family:'Noto Sans JP','Noto Sans KR',sans-serif!important}   /* 한국어·영어 화면에 들어가는 일본어(회사명·지명 등): 한자는 JP, 한글은 기존 KR */
+
+  /* ---------- 상단 메뉴: 글씨 확대(약 1.5배) + 간격 조정 ---------- */
+  .nav{height:84px}
+  .menu{gap:26px}
+  header .wrap{max-width:1440px}                           /* 글씨가 커진 만큼 상단 메뉴 줄을 조금 넓게 */
+  .menu a{font-size:20px}                                   /* 회사소개·사업영역·취급품목·실적·문의 + 카탈로그·실적표 */
+  .menu a.menu__btn{padding:10px 16px}
+  .menu a.menu__btn--first{margin-left:12px}
+  .menu a.menu__btn:not(.menu__btn--first){margin-left:-10px}
+  .langsw button{font-size:12px;padding:7px 10px}
+  @media(min-width:961px) and (max-width:1319px){           /* 글씨가 커진 만큼 조금 일찍 햄버거 메뉴로 전환 */
+    .menu,.nav__cta{display:none}
+    .burger{display:flex}
+    .nav .langsw{margin-left:auto;margin-right:14px}
+  }
+  @media(max-width:960px){.nav{height:72px}}
+
+  /* ---------- 메인: 영상을 화면 맨 위까지 확장, 상단 메뉴는 투명 → 마우스를 올리면 흰색 ---------- */
+  .hero{margin-top:0}
+  .hero__scrollcue{top:calc(min(56.25vw,100vh) - 64px)}
+  .hero::before{content:"";position:absolute;left:0;right:0;top:0;height:170px;z-index:2;pointer-events:none;
+    background:linear-gradient(180deg,rgba(5,14,26,.55),rgba(5,14,26,0))}      /* 흰 글씨가 영상 위에서 읽히도록 위쪽만 살짝 어둡게 */
+  header .menu a,header .brand__txt b,header .brand__txt small,header .langsw button{transition:color .3s,border-color .3s,background .3s}
+  header .burger span{transition:background .3s,transform .3s,opacity .3s}
+  @media(min-width:769px){
+    body.over-hero header:hover,body.over-hero header:focus-within{background:rgba(255,255,255,.97)}   /* 메뉴에 마우스를 올리면 깨끗한 흰색 영역 */
+    body.over-hero header:not(:hover):not(:focus-within){background:transparent;border-bottom-color:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
+    body.over-hero header:not(:hover):not(:focus-within) .brand__txt b{color:#fff}
+    body.over-hero header:not(:hover):not(:focus-within) .brand__txt small{color:rgba(255,255,255,.85)}
+    body.over-hero header:not(:hover):not(:focus-within) .menu a{color:#fff}
+    body.over-hero header:not(:hover):not(:focus-within) .menu a.menu__btn{color:#fff;border-color:rgba(255,255,255,.75)}
+    body.over-hero header:not(:hover):not(:focus-within) .langsw button{color:rgba(255,255,255,.88);border-color:rgba(255,255,255,.45)}
+    body.over-hero header:not(:hover):not(:focus-within) .langsw button.on{color:#fff;border-color:#fff}
+    body.over-hero header:not(:hover):not(:focus-within) .burger span{background:#fff}
+  }
+  @media(max-width:768px){                                  /* 폰에서는 영상이 작아서 메뉴를 영상 위에 겹치지 않고 아래에 둠 */
+    .hero{margin-top:72px}
+    .hero__scrollcue{top:calc(min(56.25vw,100vh - 72px) - 64px)}
+    .hero::before{display:none}
+  }
 </style>
 </head>
-<body data-lang="ko">
+<body class="over-hero" data-lang="ko">
 
 <!-- ============ HEADER ============ -->
 <header id="top">
@@ -1293,10 +1333,14 @@ document.querySelectorAll('[data-close]').forEach(function(a){
 
 /* ---------- header bg on scroll ---------- */
 var header=document.querySelector('header');
-addEventListener('scroll',function(){
-  if(scrollY>20){header.style.background='rgba(255,255,255,.95)';header.style.borderColor='#D6E2EC';}
+/* 영상 위(over-hero)에서는 배경을 CSS가 정하고, 그 아래로 내려가면 흰색 배경을 직접 지정 */
+function paintHeader(){
+  var over=document.body.classList.contains('over-hero') && innerWidth>768;
+  if(over){header.style.background='';header.style.borderColor='';}
+  else if(scrollY>20){header.style.background='rgba(255,255,255,.95)';header.style.borderColor='#D6E2EC';}
   else{header.style.background='rgba(255,255,255,.82)';header.style.borderColor='#E6EDF4';}
-});
+}
+addEventListener('scroll',paintHeader,{passive:true}); addEventListener('resize',paintHeader);
 
 /* ---------- reveal hero text & stats on first scroll, hide scroll cue ---------- */
 (function(){
@@ -1428,6 +1472,14 @@ document.querySelectorAll('a.brand[href="#top"]').forEach(function(a){
   ['rec1.s','rec2.s','rec3.s','rec4.s'].forEach(function(k){
     document.querySelectorAll('[data-t="'+k+'"]').forEach(function(e){e.classList.add('jp-text');});
   });
+})();
+
+/* ---------- 영상이 맨 위에 보이는 동안은 메뉴를 투명하게(마우스를 올리면 흰색) ---------- */
+(function(){
+  var hdr=document.querySelector('header'), hero=document.querySelector('.hero');
+  if(!hdr||!hero) return;
+  function upd(){ document.body.classList.toggle('over-hero', hero.getBoundingClientRect().bottom>hdr.offsetHeight+2); if(typeof paintHeader==='function') paintHeader(); }
+  addEventListener('scroll',upd,{passive:true}); addEventListener('resize',upd); upd();
 })();
 
 setLang(pickLang(),false);
