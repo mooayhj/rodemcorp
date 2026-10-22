@@ -687,12 +687,42 @@
   .menu a.menu__btn--first{margin-left:12px}
   .menu a.menu__btn:not(.menu__btn--first){margin-left:-10px}
   .langsw button{font-size:12px;padding:7px 10px}
-  @media(min-width:961px) and (max-width:1319px){           /* 글씨가 커진 만큼 조금 일찍 햄버거 메뉴로 전환 */
+  @media(min-width:961px) and (max-width:1359px){           /* 글씨가 커진 만큼 조금 일찍 햄버거 메뉴로 전환 */
     .menu,.nav__cta{display:none}
     .burger{display:flex}
     .nav .langsw{margin-left:auto;margin-right:14px}
   }
   @media(max-width:960px){.nav{height:72px}}
+
+  /* ---------- 로고 글씨: 윗줄(RODEM)·아랫줄(CORPORATION)을 같은 크기·같은 굵기로, 로고 마크도 함께 확대 ---------- */
+  header .brand__txt b,header .brand__txt small,
+  footer .brand__txt b,footer .brand__txt small{
+    display:block;font-family:var(--disp);font-weight:800;font-size:17px;letter-spacing:.09em;line-height:1.08;
+    color:var(--ink);text-transform:uppercase;margin:0}
+  body[data-lang="ja"] header .brand__txt b,body[data-lang="ja"] header .brand__txt small{font-size:17px;letter-spacing:.06em;text-transform:none}
+  header .brand{gap:14px}
+  header .brand__mark{width:50px;height:50px}
+  footer .brand__mark{width:46px;height:46px}
+  @media(max-width:560px){                                   /* 폰: 로고 줄이 비좁아서 글씨·마크를 함께 줄임(위아래는 계속 같은 크기) */
+    header .brand__txt b,header .brand__txt small,
+    body[data-lang="ja"] header .brand__txt b,body[data-lang="ja"] header .brand__txt small{font-size:12px;letter-spacing:.05em}
+    header .brand{gap:8px}
+    header .brand__mark{width:38px;height:38px}
+  }
+  @media(max-width:360px){
+    header .brand__txt b,header .brand__txt small,
+    body[data-lang="ja"] header .brand__txt b,body[data-lang="ja"] header .brand__txt small{font-size:10.5px;letter-spacing:.03em}
+    header .brand{gap:6px}
+    header .brand__mark{width:34px;height:34px}
+  }
+  @media(max-width:560px){                                   /* 폰: 언어 버튼을 조금 작게 해서 로고(글씨·마크)가 들어갈 자리 확보 */
+    .nav .langsw{gap:3px;margin-right:6px}
+    .langsw button{font-size:10px;padding:6px 8px;letter-spacing:.02em}
+  }
+  @media(max-width:360px){
+    .nav .langsw{gap:2px;margin-right:2px}
+    .langsw button{font-size:9px;padding:5px 5px;letter-spacing:0}
+  }
 </style>
 </head>
 <body data-lang="ko">
