@@ -723,6 +723,11 @@
     .nav .langsw{gap:2px;margin-right:2px}
     .langsw button{font-size:9px;padding:5px 5px;letter-spacing:0}
   }
+
+  /* ---------- 상단 메뉴 간격: 메뉴 항목을 막대 전체에 고르게 넓게 펼침 ---------- */
+  header .wrap{max-width:1600px}                                /* 큰 화면에서는 상단 막대도 더 넓게 */
+  .nav .menu{flex:1;justify-content:space-evenly;gap:26px;margin:0 14px}
+  .menu a.menu__btn--first,.menu a.menu__btn:not(.menu__btn--first){margin-left:0}
 </style>
 </head>
 <body data-lang="ko">
