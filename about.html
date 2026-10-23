@@ -693,6 +693,35 @@
   header .wrap{max-width:1600px}                                /* 큰 화면에서는 상단 막대도 더 넓게 */
   .nav .menu{flex:1;justify-content:space-evenly;gap:26px;margin:0 14px}
   .menu a.menu__btn--first,.menu a.menu__btn:not(.menu__btn--first){margin-left:0}
+
+  /* ---------- 상단: 카탈로그·실적표 버튼을 가까운 한 쌍으로 묶기 ---------- */
+  .menu .menu__btns{display:flex;align-items:center;gap:12px}
+
+  /* ---------- 언어 선택: 누르면 아래로 선택지가 펼쳐지는 메뉴 ---------- */
+  .langsw{position:relative;display:block}
+  .langsw .langsw__cur{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;line-height:1;
+    padding:10px 13px;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;transition:color .25s,border-color .25s,background .25s}
+  .langsw .langsw__cur svg{width:10px;height:6px;flex:none;transition:transform .25s var(--ease)}
+  .langsw.open .langsw__cur svg{transform:rotate(180deg)}
+  .langsw .langsw__cur:hover,.langsw.open .langsw__cur{color:var(--bronze);border-color:var(--bronze)}
+  .langsw .langsw__list{position:absolute;top:calc(100% + 8px);right:0;min-width:150px;margin:0;padding:6px 0;list-style:none;
+    background:#fff;border:1px solid var(--line);box-shadow:0 14px 34px rgba(10,30,60,.16);z-index:90;
+    opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .2s,transform .25s var(--ease),visibility .2s}
+  .langsw.open .langsw__list{opacity:1;visibility:visible;transform:none}
+  .langsw .langsw__list button{display:flex;justify-content:space-between;align-items:baseline;gap:18px;width:100%;margin:0;padding:12px 16px;
+    border:0;background:transparent;font-family:var(--mono);font-size:13px;letter-spacing:.1em;color:var(--ink);text-align:left;cursor:pointer;transition:background .2s,color .2s}
+  .langsw .langsw__list button small{font-family:var(--kr);font-size:12.5px;letter-spacing:0;color:var(--steel-400)}
+  body[data-lang="ja"] .langsw .langsw__list button small{font-family:var(--jp)}
+  .langsw .langsw__list button:hover{background:var(--steel-900);color:var(--bronze)}
+  .langsw .langsw__list button.on{color:var(--bronze);font-weight:700}
+  .langsw .langsw__list button.on small{color:var(--bronze)}
+  @media(max-width:560px){
+    .langsw .langsw__cur{font-size:11px;padding:8px 10px;gap:7px;letter-spacing:.08em}
+    .langsw .langsw__list{min-width:140px}
+  }
+  @media(max-width:360px){
+    .langsw .langsw__cur{font-size:10px;padding:7px 8px;gap:5px;letter-spacing:.04em}
+  }
 </style>
 </head>
 <body data-lang="ko">
@@ -713,13 +742,18 @@
       <a href="index.html#products" data-t="nav.products"></a>
       <a href="002_gallery_0825.html" data-t="nav.network"></a>
       <a href="index.html#contact" data-t="nav.contact"></a>
-      <a href="https://docs.google.com/viewer?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmooayhj%2Frodemcorp%2Fmain%2Fcatalog_2025.pdf&embedded=true" class="menu__btn menu__btn--first" target="_blank" rel="noopener" data-t="net.catalogBtn"></a>
-      <a href="https://docs.google.com/viewer?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmooayhj%2Frodemcorp%2Fmain%2Fcatalog_jisseki_2025.pdf&embedded=true" class="menu__btn" target="_blank" rel="noopener" data-t="net.recordBtn"></a>
+      <span class="menu__btns">
+        <a href="https://docs.google.com/viewer?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmooayhj%2Frodemcorp%2Fmain%2Fcatalog_2025.pdf&embedded=true" class="menu__btn menu__btn--first" target="_blank" rel="noopener" data-t="net.catalogBtn"></a>
+        <a href="https://docs.google.com/viewer?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmooayhj%2Frodemcorp%2Fmain%2Fcatalog_jisseki_2025.pdf&embedded=true" class="menu__btn" target="_blank" rel="noopener" data-t="net.recordBtn"></a>
+      </span>
     </nav>
     <div class="langsw" data-lang-switch>
-      <button type="button" data-lang-btn="ko">KOR</button>
-      <button type="button" data-lang-btn="en">ENG</button>
-      <button type="button" data-lang-btn="ja">JPN</button>
+      <button type="button" class="langsw__cur" aria-haspopup="listbox" aria-expanded="false" aria-label="Language"><span data-lang-cur>KOR</span><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 1l4 4 4-4"/></svg></button>
+      <ul class="langsw__list" role="listbox">
+        <li><button type="button" role="option" data-lang-btn="ko">KOR<small>한국어</small></button></li>
+        <li><button type="button" role="option" data-lang-btn="en">ENG<small>English</small></button></li>
+        <li><button type="button" role="option" data-lang-btn="ja">JPN<small>日本語</small></button></li>
+      </ul>
     </div>
     <button class="burger" id="burger" data-t-aria="nav.menuOpen">
       <span></span><span></span><span></span>
@@ -1169,6 +1203,20 @@ document.querySelectorAll('.rv').forEach(function(el){io.observe(el);});
   ['rec1.s','rec2.s','rec3.s','rec4.s'].forEach(function(k){
     document.querySelectorAll('[data-t="'+k+'"]').forEach(function(e){e.classList.add('jp-text');});
   });
+})();
+
+/* ---------- 언어 선택 메뉴(아래로 펼쳐짐) ---------- */
+(function(){
+  var box=document.querySelector('.langsw'); var cur=box&&box.querySelector('.langsw__cur'); if(!box||!cur) return;
+  function closeMenu(){box.classList.remove('open');cur.setAttribute('aria-expanded','false');}
+  function openMenu(){box.classList.add('open');cur.setAttribute('aria-expanded','true');}
+  cur.addEventListener('click',function(e){e.stopPropagation(); box.classList.contains('open')?closeMenu():openMenu();});
+  document.addEventListener('click',function(e){ if(!box.contains(e.target)) closeMenu(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'){closeMenu();} });
+  window.addEventListener('blur',closeMenu);   /* 지도(iframe) 등을 눌러 포커스가 넘어가도 닫힘 */
+  box.querySelectorAll('[data-lang-btn]').forEach(function(b){ b.addEventListener('click',closeMenu); });
+  function sync(){ var l=document.body.getAttribute('data-lang')||'ko'; var el=box.querySelector('[data-lang-cur]'); if(el) el.textContent=({ko:'KOR',en:'ENG',ja:'JPN'})[l]||'KOR'; }
+  new MutationObserver(sync).observe(document.body,{attributes:true,attributeFilter:['data-lang']}); sync();
 })();
 
 setLang(pickLang(),false);
