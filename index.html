@@ -521,9 +521,6 @@
   }
   @media(max-width:680px){
     .stats__row{grid-template-columns:1fr 1fr}
-    .stat:nth-child(3),.stat:nth-child(5){border-left:0}
-    .stat{border-top:1px solid var(--line-soft)}
-    .stat:nth-child(-n+2){border-top:0}
     .flow{grid-template-columns:1fr}
     .step{border-left:0;border-top:1px solid var(--line)}
     .step:first-child{border-top:0}
@@ -675,11 +672,9 @@
   }
 
   /* ---------- 숫자 띠(stats) 줄맞춤: 첫 숫자를 페이지 본문 왼쪽 선에 맞추고, 설명 문구 줄바꿈을 균형 있게 ---------- */
-  .stat:first-child{padding-left:0}
   .stat span{text-wrap:balance;line-height:1.6}
   .stat b i{display:inline-block;vertical-align:baseline}
   @media(max-width:680px){
-    .stat:nth-child(odd){padding-left:0}
   }
 
   /* ---------- 한자 글꼴 보정: 일본어 글자는 항상 Noto Sans JP(일본식 자형)로 표시 ---------- */
@@ -791,11 +786,41 @@
     .langsw .langsw__cur{font-size:10px;padding:7px 8px;gap:5px;letter-spacing:.04em}
   }
 
-  /* ---------- 숫자 띠 6칸: 중간 폭에서는 3열×2줄 ---------- */
-  @media(min-width:681px) and (max-width:1080px){
+
+  /* ---------- 숫자 띠(C안): 지식재산 3칸(국내 특허·디자인·일본 특허)을 한 박스로 묶고, 한국=파랑 / 일본=빨강 ---------- */
+  .stats__row{--tag:36px;--iph:42px;grid-template-columns:repeat(6,1fr);align-items:stretch}
+  .stats__row>.stat{position:relative;padding-top:calc(13px + var(--iph) + var(--tag))}     /* 박스 제목·나라 표시 높이만큼 비워서, 바깥 칸의 숫자도 박스 안 숫자와 같은 줄 */
+  .stats__row>.stat:first-child{padding-left:0}
+  .ipgroup{grid-column:span 3;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.035)}
+  .iphead{box-sizing:border-box;height:var(--iph);display:flex;align-items:center;padding:0 22px;font-family:var(--mono);font-size:11px;letter-spacing:.22em;
+    color:#9FB3C8;border-bottom:1px solid rgba(255,255,255,.14);white-space:nowrap;overflow:hidden}
+  .ipin{display:grid;grid-template-columns:repeat(3,1fr)}
+  .ipin .stat{position:relative;padding:calc(12px + var(--tag)) 22px 14px}
+  .stat__tag{position:absolute;top:12px;font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.2em;line-height:1.2;padding:3px 8px;border:1px solid currentColor}
+  .stat__tag.is-mid{color:#9FB3C8}
+  .stat.is-kr{box-shadow:inset 0 3px 0 #3AA0FF}
+  .stat.is-jp{box-shadow:inset 0 3px 0 #FF4D6D}
+  .stat.is-kr .stat__tag,.stat.is-kr b i{color:#3AA0FF}
+  .stat.is-jp .stat__tag,.stat.is-jp b i{color:#FF4D6D}
+  @media(min-width:681px) and (max-width:1080px){            /* 태블릿: 윗줄 3칸, 아랫줄은 지식재산 박스 */
     .stats__row{grid-template-columns:repeat(3,1fr)}
-    .stat:nth-child(3n+1){border-left:0;padding-left:0}
-    .stat:nth-child(n+4){border-top:1px solid var(--line-soft);margin-top:10px;padding-top:22px}
+    .stats__row>.stat{padding-top:12px}
+    .ipgroup{grid-column:1/-1;margin-top:20px}
+  }
+  @media(max-width:680px){                                    /* 모바일: 윗줄 2칸 → 박스 */
+    .stats__row{grid-template-columns:1fr 1fr}
+    .stats__row>.stat{padding-top:12px}
+    .stats__row>.stat:nth-child(odd){border-left:0;padding-left:0}
+    .stats__row>.stat:nth-child(3){border-top:1px solid var(--line-soft);margin-top:10px;padding-top:22px}
+    .ipgroup{grid-column:1/-1;margin-top:20px}
+  }
+  @media(max-width:560px){
+    .iphead{height:auto;min-height:var(--iph);white-space:normal;padding:12px 22px;font-size:10px;letter-spacing:.14em;line-height:1.5}
+    .ipin{grid-template-columns:1fr}
+    .ipin .stat{border-left:0;border-top:1px solid rgba(255,255,255,.14)}
+    .ipin .stat:first-child{border-top:0}
+    .ipin .stat.is-kr,.ipin .stat.is-jp{box-shadow:inset 3px 0 0 var(--accent)}
+    .ipin .stat.is-kr{--accent:#3AA0FF}.ipin .stat.is-jp{--accent:#FF4D6D}
   }
 </style>
 </head>
@@ -890,9 +915,14 @@
         <div class="stat"><b>25<i data-t="stat1.u"></i></b><span data-t="stat1.d"></span></div>
         <div class="stat"><b>10<i>+</i></b><span data-t="stat3.d"></span></div>
         <div class="stat"><b>BIM</b><span data-t="stat4.d"></span></div>
-        <div class="stat"><b>3<i data-t="stat6.u"></i></b><span data-t="stat6.d"></span></div>
-        <div class="stat"><b>12<i data-t="stat7.u"></i></b><span data-t="stat7.d"></span></div>
-        <div class="stat"><b>3<i data-t="stat5.u"></i></b><span data-t="stat5.d"></span></div>
+        <div class="ipgroup">
+          <div class="iphead" data-t="stat.ip"></div>
+          <div class="ipin">
+            <div class="stat is-kr"><em class="stat__tag">KOREA</em><b>3<i data-t="stat6.u"></i></b><span data-t="stat6.d"></span></div>
+            <div class="stat"><em class="stat__tag is-mid">DESIGN</em><b>12<i data-t="stat7.u"></i></b><span data-t="stat7.d"></span></div>
+            <div class="stat is-jp"><em class="stat__tag">JAPAN</em><b>3<i data-t="stat5.u"></i></b><span data-t="stat5.d"></span></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1159,6 +1189,7 @@ ko:{
  "route.s1":"인천/부산","route.s2":"SHIPPING","route.s3":"통관 · QC","route.s4":"오사카/도쿄",
  "stat1.u":"년+","stat1.d":"파트너사 해외조달 실적 (일본 전역 금속공사)",
  "stat6.u":"건","stat6.d":"국내 특허 보유","stat7.u":"건","stat7.d":"디자인 보유",
+ "stat.ip":"INTELLECTUAL PROPERTY · 지식재산",
  "stat3.d":"취급 금속마감재 품목군","stat4.d":"도면⁠·⁠강도계산⁠·⁠3D 시공검토 대응",
  "stat5.u":"건","stat5.d":"일본 특허 보유",
  "about.eyebrow":"회사소개 · 로뎀코퍼레이션",
@@ -1232,6 +1263,7 @@ en:{
  "route.s1":"Incheon/Busan","route.s2":"SHIPPING","route.s3":"CUSTOMS · QC","route.s4":"Osaka/Tokyo",
  "stat1.u":"+ yrs","stat1.d":"Partner track record in overseas sourcing (metal works across Japan)",
  "stat6.u":" cases","stat6.d":"Korean domestic patents held","stat7.u":" cases","stat7.d":"Designs held",
+ "stat.ip":"INTELLECTUAL PROPERTY",
  "stat3.d":"Product groups of metal finishing materials","stat4.d":"Shop drawings, strength calculation, 3D review",
  "stat5.u":" cases","stat5.d":"Japan patents held",
  "about.eyebrow":"About · RODEM CORPORATION",
@@ -1305,6 +1337,7 @@ ja:{
  "route.s1":"仁川/釜山","route.s2":"海上輸送","route.s3":"通関 · QC","route.s4":"大阪/東京",
  "stat1.u":"年+","stat1.d":"パートナーの海外調達実績（日本全国 金属工事）",
  "stat6.u":"件","stat6.d":"韓国国内の特許を保有","stat7.u":"件","stat7.d":"デザインを保有",
+ "stat.ip":"INTELLECTUAL PROPERTY · 知的財産",
  "stat3.d":"取扱金属マテリアルの品目群","stat4.d":"図面・強度計算・3D施工検討に対応",
  "stat5.u":"件","stat5.d":"日本の特許を保有",
  "about.eyebrow":"会社紹介 · ロデムコーポレーション",
